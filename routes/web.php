@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,9 +27,19 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
+Route::get('/products', function () {
     $products = Product::with('category')->get();
-    return Inertia::render('AdminDashboard', ['products' => $products]);
+    return Inertia::render('ManageProducts', ['products' => $products, 'view' => 'products']);
+});
+
+Route::get('/categories', function () {
+    $categories = Category::all();
+    return Inertia::render('ManageCategories', ['categories' => $categories, 'view' => 'categories']);
+});
+
+Route::get('/preview', function () {
+    $categories = Category::all();
+    return Inertia::render('ManageCategories', ['categories' => $categories, 'view' => 'preview']);
 });
 
 Route::middleware('auth')->group(function () {
@@ -37,4 +48,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
