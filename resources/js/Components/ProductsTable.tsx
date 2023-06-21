@@ -29,38 +29,40 @@ export default function ProductsTable({ products }: ProductsTableProps) {
     };
 
     return (
-        <div className="flex items-center justify-center p-5">
-            <table className="w-full text-center md:w-3/6">
-                <thead>
-                    <tr className="m-10">
-                        <th>
+        <div className="items-center justify-center m-5 overflow-scroll rounded-md md:flex md:mx-20 md:my-5">
+            <table className="w-full overflow-scroll text-left lg:min-w-2/3 whitespace-nowrap">
+                <thead className="text-white uppercase divide-y-2 bg-slate-900">
+                    <tr>
+                        <th className="px-6 py-3">
                             <input
                                 type="checkbox"
-                                name=""
-                                id=""
+                                className="p-2 rounded-full checked:bg-slate-800"
                                 onChange={onAllSelected}
                                 checked={
                                     selectedProducts.length == products.length
                                 }
                             />
                         </th>
-                        <th>Nombre</th>
-                        <th>Categoria</th>
-                        <th>Precio ($)</th>
-                        <th>Opciones</th>
+                        <th className="p-3">Nombre</th>
+                        <th className="p-3">Categoria</th>
+                        <th className="p-3">Precio ($)</th>
+                        <th className="p-3">Opciones</th>
                     </tr>
+                </thead>
+                <tbody className="">
                     {products.map((product) => (
                         <tr
                             key={product.id}
                             className={
                                 selectedProducts.includes(product.id.toString())
-                                    ? "bg-slate-200"
-                                    : ""
+                                    ? "divide-slate-300 bg-slate-200"
+                                    : "divide-slate-300"
                             }
                         >
-                            <td className="p-4 m-2">
+                            <td className="px-5 py-2 border">
                                 <input
                                     type="checkbox"
+                                    className="p-2 rounded-full checked:bg-slate-800"
                                     id={product.id.toString()}
                                     checked={selectedProducts.includes(
                                         product.id.toString()
@@ -68,26 +70,23 @@ export default function ProductsTable({ products }: ProductsTableProps) {
                                     onChange={handleSelected}
                                 />
                             </td>
-                            <td className="p-2">{product.name}</td>
-                            <td className="p-2">{product.category.name}</td>
-                            <td className="p-2">${product.price}</td>
-                            <td>
-                                <div className="flex items-center justify-center gap-2 text-white">
-                                    <button className="p-2 bg-blue-700">
-                                        {" "}
-                                        <MdEdit />{" "}
+                            <td className="px-5 py-2 border">{product.name}</td>
+                            <td className="px-5 py-2 border">{product.category.name}</td>
+                            <td className="px-5 py-2 border">${product.price}</td>
+                            <td className="px-5 py-2 border">
+                                <div className="flex items-center justify-center gap-2 text-2xl">
+                                    <button className="p-2 rounded-md">
+                                        <MdEdit />
                                     </button>
-                                    <button className="p-2 bg-red-600">
-                                        {" "}
-                                        <MdDelete />{" "}
+                                    <button className="p-2 text-white rounded-md bg-slate-900">
+                                        <MdDelete />
                                     </button>
                                 </div>
                             </td>
                         </tr>
                     ))}
-                </thead>
+                </tbody>
             </table>
-            ;
         </div>
     );
 }

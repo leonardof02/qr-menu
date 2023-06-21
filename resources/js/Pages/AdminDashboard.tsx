@@ -7,8 +7,7 @@ export default function AdminDashboard({ products }: { products: Product[]}) {
 
     return (
         <div>
-            <h1>AAAAAAAAAA</h1>
-            <p>AdminDashboard Hello World</p>
+
             <ProductsTable products={products}/>
         </div>
     );
