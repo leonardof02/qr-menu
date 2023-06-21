@@ -1,5 +1,10 @@
 import { Link } from "@inertiajs/react";
-import { MdTableChart, MdCategory, MdPreview } from "react-icons/md";
+import {
+    MdTableChart,
+    MdCategory,
+    MdPreview,
+    MdMoreHoriz,
+} from "react-icons/md";
 
 export type MenuOption = "products" | "categories" | "preview" | "";
 interface DashboardMenuProps {
@@ -31,11 +36,16 @@ function DashboardMenu({ option }: DashboardMenuProps) {
                 href="/preview"
                 className={`flex items-center justify-center p-3 mx-2 my-1 text-3xl text-white
                             transition-colors rounded-sm hover:bg-white hover:text-black
-                            ${
-                                option === "preview" && "bg-white text-black"
-                            }`}
+                            ${option === "preview" && "bg-white text-black"}`}
             >
                 <MdPreview />
+            </Link>
+            <Link
+                href="/"
+                className={`flex items-center justify-center p-3 mx-2 my-1 text-3xl text-white
+                            transition-colors rounded-sm mt-auto`}
+            >
+                <MdMoreHoriz />
             </Link>
         </div>
     );
