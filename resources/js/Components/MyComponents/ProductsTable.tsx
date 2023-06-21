@@ -71,8 +71,12 @@ export default function ProductsTable({ products }: ProductsTableProps) {
                                 />
                             </td>
                             <td className="px-5 py-2 border">{product.name}</td>
-                            <td className="px-5 py-2 border">{product.category.name}</td>
-                            <td className="px-5 py-2 border">${product.price}</td>
+                            <td className="px-5 py-2 border">
+                                {product.category.name}
+                            </td>
+                            <td className="px-5 py-2 border">
+                                ${product.price}
+                            </td>
                             <td className="px-5 py-2 border">
                                 <div className="flex items-center gap-2 text-2xl justify-evenly">
                                     <button className="p-2 rounded-md">
