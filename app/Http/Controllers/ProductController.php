@@ -39,7 +39,8 @@ class ProductController extends Controller
 
         $name = $validatedProduct['name'];
         $price = $validatedProduct['price'];
-        $categoryId = Category::where('name', $validatedProduct['category'])->firstOrFail();
+        $categoryId = Category::where('name', $validatedProduct['category'])
+                        ->firstOrFail()->id;
 
         $newProduct = new Product;
         $newProduct->name = $name;
@@ -47,7 +48,7 @@ class ProductController extends Controller
         $newProduct->category_id = $categoryId;
         $newProduct->save();
 
-        return to_route("/products");
+        return redirect("/products");
     }
 
     /**

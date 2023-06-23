@@ -23,7 +23,7 @@ export default function ManageProducts({
     view,
 }: ManageProductsProps) {
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const [category, setCategory] = useState<string>("");
+    const [category, setCategory] = useState<string>(categories[0].name);
     const [productName, setProductName] = useState<string>("");
     const [price, setPrice] = useState<number>(10);
 
@@ -50,6 +50,7 @@ export default function ManageProducts({
             category: category,
             price,
         });
+        setModalIsOpen(false);
     };
 
     return (
@@ -61,7 +62,7 @@ export default function ManageProducts({
                 }`}
             >
                 <DashboardMenu option={view} />
-                <div className="flex-1">
+                <div className="flex-1 h-screen overflow-scroll">
                     <h1 className="m-5 text-3xl font-extrabold text-center">
                         Manejar Productos
                     </h1>
