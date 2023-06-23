@@ -79,10 +79,10 @@ export default function ProductsTable({ products }: ProductsTableProps) {
                             </td>
                             <td className="px-5 py-2 border">
                                 <div className="flex items-center gap-2 text-2xl justify-evenly">
-                                    <button className="p-2 rounded-md">
+                                    <button className="p-2 transition-all rounded-md hover:shadow-lg hover:cursor-pointer hover:-translate-y-1">
                                         <MdEdit />
                                     </button>
-                                    <button className="p-2 text-white rounded-md bg-slate-900">
+                                    <button className="p-2 text-white transition-all rounded-md bg-slate-900 hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1">
                                         <MdDelete />
                                     </button>
                                 </div>

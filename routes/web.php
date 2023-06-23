@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Category;
 use App\Models\Product;
@@ -27,10 +28,8 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/products', function () {
-    $products = Product::with('category')->get();
-    return Inertia::render('ManageProducts', ['products' => $products, 'view' => 'products']);
-});
+Route::get('/products', [ProductController::class, 'index']);
+Route::post('/products', [ProductController::class, 'store']);
 
 Route::get('/categories', function () {
     $categories = Category::all();
