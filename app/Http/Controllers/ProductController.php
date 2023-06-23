@@ -13,7 +13,8 @@ class ProductController extends Controller
     {
         $products = Product::with('category')->get();
         $categories = Category::all();
-        return Inertia::render('ManageProducts', compact( 'products', 'categories' ));
+        $view = "products";
+        return Inertia::render('ManageProducts', compact( 'products', 'categories', 'view' ));
     }
 
     /**
@@ -36,18 +37,17 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'min:0' ],
         ]);
 
-        ddd($validatedProduct);
-
         $name = $validatedProduct['name'];
         $price = $validatedProduct['price'];
         $categoryId = Category::where('name', $validatedProduct['category'])->firstOrFail();
-        Product::create([
-            'name' => $name,
-            'price' => $price,
-            'category_id' => $categoryId,
-        ]);
 
-        return redirect()->route("products.get");
+        $newProduct = new Product;
+        $newProduct->name = $name;
+        $newProduct->price = $price;
+        $newProduct->category_id = $categoryId;
+        $newProduct->save();
+
+        return to_route("/products");
     }
 
     /**

@@ -46,16 +46,38 @@ export default function ManageProducts({
 
     const handleSubmit = () => {
         router.post("/products", {
-            productName,
-            category,
+            name: productName,
+            category: category,
             price,
         });
     };
 
     return (
         <>
+
+            <div
+                className={`flex align-top justify-normal ${
+                    modalIsOpen && "pointer-events-none"
+                }`}
+            >
+                <DashboardMenu option={view} />
+                <div className="flex-1">
+                    <h1 className="m-5 text-3xl font-extrabold text-center">
+                        Manejar Productos
+                    </h1>
+                    <ProductsTable products={products} />
+                    <div className="flex items-center justify-center w-full text-lg">
+                        <button
+                            className="flex items-center justify-center p-3 text-white transition-all bg-black rounded-md hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
+                            onClick={openModal}
+                        >
+                            <MdAdd />
+                            Agregar Producto
+                        </button>
+                    </div>
+                </div>
+            </div>
             <Modal isOpen={modalIsOpen} onClose={handleModalClose}>
-                <form>
                     <h3 className="text-xl font-extrabold">
                         Agregar un producto
                     </h3>
@@ -88,30 +110,7 @@ export default function ManageProducts({
                     >
                             <MdSend />
                     </button>
-                </form>
             </Modal>
-            <div
-                className={`flex align-top justify-normal ${
-                    modalIsOpen && "pointer-events-none"
-                }`}
-            >
-                <DashboardMenu option={view} />
-                <div className="flex-1">
-                    <h1 className="m-5 text-3xl font-extrabold text-center">
-                        Manejar Productos
-                    </h1>
-                    <ProductsTable products={products} />
-                    <div className="flex items-center justify-center w-full text-lg">
-                        <button
-                            className="flex items-center justify-center p-3 text-white transition-all bg-black rounded-md hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
-                            onClick={openModal}
-                        >
-                            <MdAdd />
-                            Agregar Producto
-                        </button>
-                    </div>
-                </div>
-            </div>
         </>
     );
 }
