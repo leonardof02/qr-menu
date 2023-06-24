@@ -1,3 +1,7 @@
+// Const
+export const NO_EVENT = () => {}
+
+// Interfaces
 export interface Product {
     id: number;
     name: string;
@@ -17,4 +21,6 @@ export interface ManageProductsState {
     price: number;
 }
 
-export const NO_EVENT = () => {}
+// Types
+export type FormMode = "add" | "edit";
+

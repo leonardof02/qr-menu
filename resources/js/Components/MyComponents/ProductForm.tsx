@@ -16,15 +16,9 @@ interface AddProductFormProps {
     ) => void;
 }
 
-export default function AddProductForm({
-    product,
-    onSubmit,
-    categories,
-    handleChange,
-}: AddProductFormProps) {
+export default function ProductForm({product, onSubmit, categories, handleChange }: AddProductFormProps) {
     return (
         <>
-            <h3 className="text-xl font-extrabold">Agregar un producto</h3>
             <TextInput
                 type="text"
                 value={product.name}

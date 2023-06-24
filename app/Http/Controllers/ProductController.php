@@ -9,6 +9,7 @@ use Inertia\Inertia;
 
 class ProductController extends Controller
 {
+    // Get a product
     public function index()
     {
         $products = Product::with('category')->get();
@@ -17,17 +18,7 @@ class ProductController extends Controller
         return Inertia::render('ManageProducts', compact( 'products', 'categories', 'view' ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Store a new product
     public function store(Request $request)
     {
         $validatedProduct = $request->validate([
@@ -39,33 +30,19 @@ class ProductController extends Controller
         return redirect("/products");
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+    // Update a product
     public function update(Request $request, string $id)
     {
-        //
+        $validatedProduct = $request->validate([
+            'name' => ['required', 'max:255'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'price' => ['required', 'numeric', 'min:0' ],
+        ]);
+        Product::query()->find($id)->update($validatedProduct);
+        return redirect("/products");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Remove a product
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);

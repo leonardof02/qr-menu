@@ -1,15 +1,17 @@
 import { ChangeEvent, useState } from "react";
-import { MdAdd, MdSend } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import { router } from "@inertiajs/react";
 
-import { Category, Product } from "@/types/app";
+import { Category, FormMode, Product } from "@/types/app";
 import { ManageProductsState } from "@/types/app";
 
 // Components
 import ProductsTable from "@/Components/MyComponents/ProductsTable";
-import DashboardMenu, { MenuOption } from "@/Components/MyComponents/DashboardMenu";
+import DashboardMenu, {
+    MenuOption,
+} from "@/Components/MyComponents/DashboardMenu";
 import Modal from "@/Components/MyComponents/Modal";
-import AddProductForm from "@/Components/MyComponents/AddProductForm";
+import ProductForm from "@/Components/MyComponents/ProductForm";
 
 interface ManageProductsProps {
     products: Product[];
@@ -17,31 +19,54 @@ interface ManageProductsProps {
     view: MenuOption;
 }
 
-export default function ManageProducts({
-    products,
-    categories,
-    view,
-}: ManageProductsProps) {
+const initialState = {
+    name: "",
+    category: "",
+    price: 10,
+}
+
+export default function ManageProducts({ products, categories, view }: ManageProductsProps) {
+
+    // State
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const [productState, setProductState] = useState<ManageProductsState>({
-        name: "",
-        category: categories[0].name,
-        price: 10,
-    });
+    const [mode, setMode] = useState<FormMode>("add");
+    const [idProductForEditing, setIdProductForEditing] = useState<number | null>(null);
+    const [productState, setProductState] = useState<ManageProductsState>(initialState);
 
+    // Functions
     const handleModalClose = () => setModalIsOpen(false);
-    const openModal = () => setModalIsOpen(true);
 
+    const openModalForAddingProduct = () => {
+        setProductState(initialState);
+        setModalIsOpen(true);
+        setMode("add");
+    };
+
+    const openModalForEditingProduct = (id: number) => {
+        const product = products.find( product => id === product.id );
+        if (product) {
+            const { name, price, category } = product;
+            setProductState({
+                name,
+                price,
+                category: category.name,
+            });
+            setModalIsOpen(true);
+            setMode("edit");
+        }
+        setIdProductForEditing(id);
+    };
+
+    const handleDeleteProduct = (id: number) => router.delete(`/products/${id}`);
     const handleChangeState = (
         e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
     ) => {
-        setProductState({
-            ...productState,
-            [e.target.id]: e.target.value,
-        });
+        setProductState({ ...productState, [e.target.id]: e.target.value });
     };
 
-    function handleSubmit() {
+    // Submit functions
+    function addProduct() {
+        setMode("add");
         const { name, category, price } = productState;
         const newProduct = {
             name,
@@ -56,6 +81,18 @@ export default function ManageProducts({
         });
     }
 
+    function editProduct() {
+        const { name, category, price } = productState;
+        const newProduct = {
+            name,
+            price,
+            category_id: categories.find((c) => category === c.name)?.id,
+        };
+        router.put(`/products/${idProductForEditing}`, newProduct);
+        setModalIsOpen(false);
+    }
+
+    // Render
     return (
         <>
             <div
@@ -68,11 +105,15 @@ export default function ManageProducts({
                     <h1 className="m-5 text-3xl font-extrabold text-center">
                         Manejar Productos
                     </h1>
-                    <ProductsTable products={products} />
+                    <ProductsTable
+                        products={products}
+                        onDelete={handleDeleteProduct}
+                        onEdit={openModalForEditingProduct}
+                    />
                     <div className="flex items-center justify-center w-full text-lg">
                         <button
                             className="flex items-center justify-center p-3 text-white transition-all bg-black rounded-md hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
-                            onClick={openModal}
+                            onClick={openModalForAddingProduct}
                         >
                             <MdAdd />
                             Agregar Producto
@@ -81,11 +122,14 @@ export default function ManageProducts({
                 </div>
             </div>
             <Modal isOpen={modalIsOpen} onClose={handleModalClose}>
-                <AddProductForm
+                <h3 className="text-xl font-extrabold">
+                    { mode === "add" ? "Agregar producto" : "Editar Producto"}
+                </h3>
+                <ProductForm
                     categories={categories}
                     handleChange={handleChangeState}
                     product={productState}
-                    onSubmit={handleSubmit}
+                    onSubmit={mode === "add" ? addProduct : editProduct}
                 />
             </Modal>
         </>
