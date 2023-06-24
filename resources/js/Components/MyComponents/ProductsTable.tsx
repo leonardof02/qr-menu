@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
+import { router } from "@inertiajs/react"
+
 import { Product } from "@/types/app";
 
 interface ProductsTableProps {
@@ -27,6 +29,10 @@ export default function ProductsTable({ products }: ProductsTableProps) {
                 : []
         );
     };
+
+    const handleDelete = (id: number) => {
+        router.delete(`/products/${id}`);
+    }
 
     return (
         <div className="items-center justify-center m-5 overflow-scroll rounded-md md:flex md:mx-20 md:my-5">
@@ -82,7 +88,7 @@ export default function ProductsTable({ products }: ProductsTableProps) {
                                     <button className="p-2 transition-all rounded-md hover:shadow-lg hover:cursor-pointer hover:-translate-y-1">
                                         <MdEdit />
                                     </button>
-                                    <button className="p-2 text-white transition-all rounded-md bg-slate-900 hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1">
+                                    <button onClick={ () => handleDelete( product.id ) } className="p-2 text-white transition-all rounded-md bg-slate-900 hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1">
                                         <MdDelete />
                                     </button>
                                 </div>

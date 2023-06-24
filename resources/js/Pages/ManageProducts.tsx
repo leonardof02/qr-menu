@@ -1,15 +1,16 @@
-import ProductsTable from "@/Components/MyComponents/ProductsTable";
-import { Category, Product } from "@/types/app";
-import DashboardMenu, {
-    MenuOption,
-} from "@/Components/MyComponents/DashboardMenu";
-import Modal from "@/Components/MyComponents/Modal";
-import TextInput from "@/Components/MyComponents/TextInput";
 import { ChangeEvent, useState } from "react";
 import { MdAdd, MdSend } from "react-icons/md";
+import { router } from "@inertiajs/react";
+
+import { Category, Product } from "@/types/app";
+
+// Components
+import ProductsTable from "@/Components/MyComponents/ProductsTable";
+import DashboardMenu, { MenuOption } from "@/Components/MyComponents/DashboardMenu";
+import Modal from "@/Components/MyComponents/Modal";
+import TextInput from "@/Components/MyComponents/TextInput";
 import DropDown from "@/Components/MyComponents/DropDown";
 import PriceInput from "@/Components/MyComponents/PriceInput";
-import { router } from "@inertiajs/react";
 
 interface ManageProductsProps {
     products: Product[];
@@ -17,45 +18,46 @@ interface ManageProductsProps {
     view: MenuOption;
 }
 
-export default function ManageProducts({
-    products,
-    categories,
-    view,
-}: ManageProductsProps) {
-    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-    const [category, setCategory] = useState<string>(categories[0].name);
-    const [productName, setProductName] = useState<string>("");
-    const [price, setPrice] = useState<number>(10);
+interface ManageProductsState {
+    name: string;
+    category: string;
+    price: number;
+}
 
-    // TODO: Refactor this
+export default function ManageProducts({ products,categories, view }: ManageProductsProps) {
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+    const [productState, setProductState] = useState<ManageProductsState>({
+        name: "",
+        category: categories[0].name,
+        price: 10,
+    });
+
     const handleModalClose = () => setModalIsOpen(false);
     const openModal = () => setModalIsOpen(true);
 
-    const handleNameChange = (e: ChangeEvent<HTMLInputElement>) =>
-        setProductName(e.target.value);
-
-    const handleCategoryChange = (e: ChangeEvent<HTMLSelectElement>) =>
-        setCategory(e.target.value);
-
-    const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        const formattedValue = value.replace(/[,]/g, ".");
-        if (formattedValue.match(/^\d+(\.\d{0,2})?$/))
-            setPrice(Number.parseFloat(e.target.value));
+    const handleChangeState = ( e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> ) => {
+        setProductState({
+            ...productState,
+            [e.target.id]: e.target.value,
+        });
     };
 
-    const handleSubmit = () => {
-        router.post("/products", {
-            name: productName,
-            category: category,
+    function handleSubmit () {
+        const { name, category, price } = productState;
+        const newProduct = {
+            name,
             price,
-        });
+            category_id: categories.find( c => category === c.name )?.id,
+        }
+        router.post("/products", newProduct);
         setModalIsOpen(false);
+        setProductState({
+            ...productState, name: ""
+        })
     };
 
     return (
         <>
-
             <div
                 className={`flex align-top justify-normal ${
                     modalIsOpen && "pointer-events-none"
@@ -79,38 +81,36 @@ export default function ManageProducts({
                 </div>
             </div>
             <Modal isOpen={modalIsOpen} onClose={handleModalClose}>
-                    <h3 className="text-xl font-extrabold">
-                        Agregar un producto
-                    </h3>
-                    <TextInput
-                        type="text"
-                        value={productName}
-                        name="name"
-                        onChange={handleNameChange}
-                        placeholder="Nombre"
-                        label="Nombre"
-                        required
-                    />
-                    <DropDown
-                        name="category"
-                        label="Categoria"
-                        options={categories}
-                        onChange={handleCategoryChange}
-                        value={category}
-                    />
-                    <PriceInput
-                        name="price"
-                        label="Precio"
-                        value={price}
-                        placeholder="Precio"
-                        onChange={handlePriceChange}
-                    />
-                    <button
-                        className="flex items-center justify-center w-20 p-3 text-xl text-white transition-all bg-black rounded-md ms-auto hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
-                        onClick={handleSubmit}
-                    >
-                            <MdSend />
-                    </button>
+                <h3 className="text-xl font-extrabold">Agregar un producto</h3>
+                <TextInput
+                    type="text"
+                    value={productState.name}
+                    name="name"
+                    onChange={handleChangeState}
+                    placeholder="Nombre"
+                    label="Nombre"
+                    required
+                />
+                <DropDown
+                    name="category"
+                    value={productState.category}
+                    label="Categoria"
+                    options={categories}
+                    onChange={handleChangeState}
+                />
+                <PriceInput
+                    name="price"
+                    label="Precio"
+                    value={productState.price}
+                    placeholder="Precio"
+                    onChange={handleChangeState}
+                />
+                <button
+                    className="flex items-center justify-center w-20 p-3 text-xl text-white transition-all bg-black rounded-md ms-auto hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
+                    onClick={handleSubmit}
+                >
+                    <MdSend />
+                </button>
             </Modal>
         </>
     );

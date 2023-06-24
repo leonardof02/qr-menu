@@ -30,24 +30,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: Refactor category name and change by category id in frontend
         $validatedProduct = $request->validate([
             'name' => ['required', 'max:255'],
-            'category' => ['required', 'exists:categories,name'],
+            'category_id' => ['required', 'exists:categories,id'],
             'price' => ['required', 'numeric', 'min:0' ],
         ]);
-
-        $name = $validatedProduct['name'];
-        $price = $validatedProduct['price'];
-        $categoryId = Category::where('name', $validatedProduct['category'])
-                        ->firstOrFail()->id;
-
-        $newProduct = new Product;
-        $newProduct->name = $name;
-        $newProduct->price = $price;
-        $newProduct->category_id = $categoryId;
-        $newProduct->save();
-
+        Product::create($validatedProduct);
         return redirect("/products");
     }
 
@@ -80,6 +68,8 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect("/products");
     }
 }
