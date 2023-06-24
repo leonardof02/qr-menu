@@ -10,3 +10,11 @@ export interface Category {
     name: string,
     icon?: string
 }
+
+export interface ManageProductsState {
+    name: string;
+    category: string;
+    price: number;
+}
+
+export const NO_EVENT = () => {}

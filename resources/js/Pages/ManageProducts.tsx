@@ -3,14 +3,13 @@ import { MdAdd, MdSend } from "react-icons/md";
 import { router } from "@inertiajs/react";
 
 import { Category, Product } from "@/types/app";
+import { ManageProductsState } from "@/types/app";
 
 // Components
 import ProductsTable from "@/Components/MyComponents/ProductsTable";
 import DashboardMenu, { MenuOption } from "@/Components/MyComponents/DashboardMenu";
 import Modal from "@/Components/MyComponents/Modal";
-import TextInput from "@/Components/MyComponents/TextInput";
-import DropDown from "@/Components/MyComponents/DropDown";
-import PriceInput from "@/Components/MyComponents/PriceInput";
+import AddProductForm from "@/Components/MyComponents/AddProductForm";
 
 interface ManageProductsProps {
     products: Product[];
@@ -18,13 +17,11 @@ interface ManageProductsProps {
     view: MenuOption;
 }
 
-interface ManageProductsState {
-    name: string;
-    category: string;
-    price: number;
-}
-
-export default function ManageProducts({ products,categories, view }: ManageProductsProps) {
+export default function ManageProducts({
+    products,
+    categories,
+    view,
+}: ManageProductsProps) {
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [productState, setProductState] = useState<ManageProductsState>({
         name: "",
@@ -35,26 +32,29 @@ export default function ManageProducts({ products,categories, view }: ManageProd
     const handleModalClose = () => setModalIsOpen(false);
     const openModal = () => setModalIsOpen(true);
 
-    const handleChangeState = ( e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> ) => {
+    const handleChangeState = (
+        e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
+    ) => {
         setProductState({
             ...productState,
             [e.target.id]: e.target.value,
         });
     };
 
-    function handleSubmit () {
+    function handleSubmit() {
         const { name, category, price } = productState;
         const newProduct = {
             name,
             price,
-            category_id: categories.find( c => category === c.name )?.id,
-        }
+            category_id: categories.find((c) => category === c.name)?.id,
+        };
         router.post("/products", newProduct);
         setModalIsOpen(false);
         setProductState({
-            ...productState, name: ""
-        })
-    };
+            ...productState,
+            name: "",
+        });
+    }
 
     return (
         <>
@@ -81,36 +81,12 @@ export default function ManageProducts({ products,categories, view }: ManageProd
                 </div>
             </div>
             <Modal isOpen={modalIsOpen} onClose={handleModalClose}>
-                <h3 className="text-xl font-extrabold">Agregar un producto</h3>
-                <TextInput
-                    type="text"
-                    value={productState.name}
-                    name="name"
-                    onChange={handleChangeState}
-                    placeholder="Nombre"
-                    label="Nombre"
-                    required
+                <AddProductForm
+                    categories={categories}
+                    handleChange={handleChangeState}
+                    product={productState}
+                    onSubmit={handleSubmit}
                 />
-                <DropDown
-                    name="category"
-                    value={productState.category}
-                    label="Categoria"
-                    options={categories}
-                    onChange={handleChangeState}
-                />
-                <PriceInput
-                    name="price"
-                    label="Precio"
-                    value={productState.price}
-                    placeholder="Precio"
-                    onChange={handleChangeState}
-                />
-                <button
-                    className="flex items-center justify-center w-20 p-3 text-xl text-white transition-all bg-black rounded-md ms-auto hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
-                    onClick={handleSubmit}
-                >
-                    <MdSend />
-                </button>
             </Modal>
         </>
     );
