@@ -12,6 +12,7 @@ import DashboardMenu, {
 } from "@/Components/MyComponents/DashboardMenu";
 import Modal from "@/Components/MyComponents/Modal";
 import ProductForm from "@/Components/MyComponents/ProductForm";
+import DeleteFloatingButton from "@/Components/MyComponents/DeleteFloatingButton";
 
 interface ManageProductsProps {
     products: Product[];
@@ -59,6 +60,11 @@ export default function ManageProducts({ products, categories, view }: ManagePro
     };
 
     const handleDeleteProduct = (id: number) => router.delete(`/products/${id}`);
+
+    function handleBulkDelete(ids: number[]) {
+        router.post("/products/delete",{ ids });
+    }
+
     const handleChangeState = (
         e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
     ) => {
@@ -112,10 +118,11 @@ export default function ManageProducts({ products, categories, view }: ManagePro
                         products={products}
                         onDelete={handleDeleteProduct}
                         onEdit={openModalForEditingProduct}
+                        onBulkDelete={ handleBulkDelete }
                     />
                     <div className="flex items-center justify-center w-full text-lg">
                         <button
-                            className="flex items-center justify-center p-3 text-white transition-all bg-black rounded-md hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
+                            className="flex items-center justify-center p-3 mb-16 text-white transition-all bg-black rounded-md hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
                             onClick={openModalForAddingProduct}
                         >
                             <MdAdd />

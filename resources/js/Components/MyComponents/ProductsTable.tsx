@@ -2,21 +2,27 @@ import { ChangeEvent, useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md";
 
 import { NO_EVENT, Product } from "@/types/app";
+import DeleteFloatingButton from "./DeleteFloatingButton";
 
 interface ProductsTableProps {
     products: Product[];
-    onDelete?: ( id: number ) => void;
-    onEdit?: ( id: number ) => void;
+    onDelete?: (id: number) => void;
+    onEdit?: (id: number) => void;
+    onBulkDelete?: (ids: number[]) => void;
 }
 
-export default function ProductsTable({ products, onDelete, onEdit }: ProductsTableProps) {
-
+export default function ProductsTable({
+    products,
+    onDelete,
+    onEdit,
+    onBulkDelete,
+}: ProductsTableProps) {
     // State
-    const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+    const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
 
     // Functions
     const handleSelected = (e: ChangeEvent<HTMLInputElement>) => {
-        const id = e.target.id;
+        const id = Number.parseInt(e.target.id);
         setSelectedProducts(
             selectedProducts.includes(id)
                 ? selectedProducts.filter(
@@ -29,7 +35,7 @@ export default function ProductsTable({ products, onDelete, onEdit }: ProductsTa
     const onAllSelected = (e: ChangeEvent<HTMLInputElement>) => {
         setSelectedProducts(
             selectedProducts.length != products.length
-                ? products.map((product) => product.id.toString())
+                ? products.map((product) => product.id)
                 : []
         );
     };
@@ -45,7 +51,9 @@ export default function ProductsTable({ products, onDelete, onEdit }: ProductsTa
                                 type="checkbox"
                                 className="p-2 rounded-full checked:bg-slate-800"
                                 onChange={onAllSelected}
-                                checked={ selectedProducts.length == products.length }
+                                checked={
+                                    selectedProducts.length == products.length
+                                }
                             />
                         </th>
                         <th className="p-3">Nombre</th>
@@ -59,7 +67,7 @@ export default function ProductsTable({ products, onDelete, onEdit }: ProductsTa
                         <tr
                             key={product.id}
                             className={
-                                selectedProducts.includes(product.id.toString())
+                                selectedProducts.includes(product.id)
                                     ? "divide-slate-300 bg-slate-200"
                                     : "divide-slate-300"
                             }
@@ -70,7 +78,7 @@ export default function ProductsTable({ products, onDelete, onEdit }: ProductsTa
                                     className="p-2 rounded-full checked:bg-slate-800"
                                     id={product.id.toString()}
                                     checked={selectedProducts.includes(
-                                        product.id.toString()
+                                        product.id
                                     )}
                                     onChange={handleSelected}
                                 />
@@ -84,14 +92,24 @@ export default function ProductsTable({ products, onDelete, onEdit }: ProductsTa
                             </td>
                             <td className="px-5 py-2 border">
                                 <div className="flex items-center gap-2 text-2xl justify-evenly">
-                                    <button 
-                                    onClick={ onEdit ? () => onEdit( product.id ) : NO_EVENT }
-                                    className="p-2 transition-all rounded-md hover:shadow-lg hover:cursor-pointer hover:-translate-y-1">
+                                    <button
+                                        onClick={
+                                            onEdit
+                                                ? () => onEdit(product.id)
+                                                : NO_EVENT
+                                        }
+                                        className="p-2 transition-all rounded-md hover:shadow-lg hover:cursor-pointer hover:-translate-y-1"
+                                    >
                                         <MdEdit />
                                     </button>
                                     <button
-                                    onClick={ onDelete ? () => onDelete( product.id ) : NO_EVENT }
-                                    className="p-2 text-white transition-all rounded-md bg-slate-900 hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1">
+                                        onClick={
+                                            onDelete
+                                                ? () => onDelete(product.id)
+                                                : NO_EVENT
+                                        }
+                                        className="p-2 text-white transition-all rounded-md bg-slate-900 hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
+                                    >
                                         <MdDelete />
                                     </button>
                                 </div>
@@ -100,6 +118,17 @@ export default function ProductsTable({ products, onDelete, onEdit }: ProductsTa
                     ))}
                 </tbody>
             </table>
+            <DeleteFloatingButton
+                isOpen={selectedProducts.length === 0 ? false : true}
+                onClick={
+                    selectedProducts.length !== 0 && onBulkDelete
+                        ? () => {
+                              onBulkDelete(selectedProducts);
+                              setSelectedProducts([]);
+                          }
+                        : NO_EVENT
+                }
+            />
         </div>
     );
 }

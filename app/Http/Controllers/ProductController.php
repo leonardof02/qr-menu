@@ -49,4 +49,12 @@ class ProductController extends Controller
         $product->delete();
         return redirect("/products");
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $request->validate(["ids" => ["required", "array", "min:1"]]);
+        $ids = $request->input('ids');
+        Product::destroy($ids);
+        return redirect()->back()->with('success', 'Los recursos se han eliminado correctamente.');
+    }
 }
