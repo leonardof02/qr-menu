@@ -22,7 +22,7 @@ function DashboardMenu({ option }: DashboardMenuProps) {
     };
 
     return (
-        <div className="flex flex-col h-screen shadow-md min-w-16 bg-slate-950">
+        <div className="flex flex-row w-screen p-1 shadow-md md:h-screen md:w-fit md:flex-col bg-slate-950">
             {menuOptions.map((menuOption, index) => (
                 <Link
                     href={`/${menuOption}`}
@@ -41,7 +41,7 @@ function DashboardMenu({ option }: DashboardMenuProps) {
             <Link
                 href="/"
                 className={`flex items-center justify-center p-3 mx-2 my-1 text-3xl text-white
-                            transition-colors rounded-sm mt-auto`}
+                            transition-colors rounded-sm ms-auto md:mt-auto`}
             >
                 <MdMoreHoriz />
             </Link>

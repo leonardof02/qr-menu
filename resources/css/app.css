@@ -7,3 +7,12 @@
         "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue",
         sans-serif;
 }
+
+body {
+    min-height: 100vh;
+}
+
+@font-face {
+    font-family: 'ShadowsIntoLight';
+    src: url("/fonts/ShadowsIntoLight-Regular.ttf") format("ttf");
+}

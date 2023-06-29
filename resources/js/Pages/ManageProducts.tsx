@@ -24,16 +24,22 @@ const initialState = {
     name: "",
     category: "",
     price: 10,
-}
+};
 
-export default function ManageProducts({ products, categories, view }: ManageProductsProps) {
-
+export default function ManageProducts({
+    products,
+    categories,
+    view,
+}: ManageProductsProps) {
     // State
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [mode, setMode] = useState<FormMode>("add");
-    const [idProductForEditing, setIdProductForEditing] = useState<number | null>(null);
+    const [idProductForEditing, setIdProductForEditing] = useState<
+        number | null
+    >(null);
     const [productState, setProductState] = useState<ManageProductsState>({
-        ...initialState, category: categories[0].name
+        ...initialState,
+        category: categories[0].name,
     });
 
     // Functions
@@ -45,7 +51,7 @@ export default function ManageProducts({ products, categories, view }: ManagePro
     };
 
     const openModalForEditingProduct = (id: number) => {
-        const product = products.find( product => id === product.id );
+        const product = products.find((product) => id === product.id);
         if (product) {
             const { name, price, category } = product;
             setProductState({
@@ -59,10 +65,11 @@ export default function ManageProducts({ products, categories, view }: ManagePro
         setIdProductForEditing(id);
     };
 
-    const handleDeleteProduct = (id: number) => router.delete(`/products/${id}`);
+    const handleDeleteProduct = (id: number) =>
+        router.delete(`/products/${id}`);
 
     function handleBulkDelete(ids: number[]) {
-        router.post("/products/delete",{ ids });
+        router.post("/products/delete", { ids });
     }
 
     const handleChangeState = (
@@ -86,7 +93,7 @@ export default function ManageProducts({ products, categories, view }: ManagePro
         setProductState({
             ...productState,
             name: "",
-            category: categories[0].name
+            category: categories[0].name,
         });
     }
 
@@ -105,9 +112,8 @@ export default function ManageProducts({ products, categories, view }: ManagePro
     return (
         <>
             <div
-                className={`flex align-top justify-normal ${
-                    modalIsOpen && "pointer-events-none"
-                }`}
+                className={`flex flex-col-reverse h-screen align-top md:w-full md:flex-row justify-normal
+                ${modalIsOpen && "pointer-events-none"}`}
             >
                 <DashboardMenu option={view} />
                 <div className="flex-1 h-screen overflow-scroll">
@@ -118,7 +124,7 @@ export default function ManageProducts({ products, categories, view }: ManagePro
                         products={products}
                         onDelete={handleDeleteProduct}
                         onEdit={openModalForEditingProduct}
-                        onBulkDelete={ handleBulkDelete }
+                        onBulkDelete={handleBulkDelete}
                     />
                     <div className="flex items-center justify-center w-full text-lg">
                         <button
@@ -133,7 +139,7 @@ export default function ManageProducts({ products, categories, view }: ManagePro
             </div>
             <Modal isOpen={modalIsOpen} onClose={handleModalClose}>
                 <h3 className="text-xl font-extrabold">
-                    { mode === "add" ? "Agregar producto" : "Editar Producto"}
+                    {mode === "add" ? "Agregar producto" : "Editar Producto"}
                 </h3>
                 <ProductForm
                     categories={categories}

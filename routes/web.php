@@ -40,8 +40,8 @@ Route::get('/categories', function () {
 });
 
 Route::get('/preview', function () {
-    $categories = Category::all();
-    return Inertia::render('ManageCategories', ['categories' => $categories, 'view' => 'preview']);
+    $categories = Category::query()->with('products')->get();
+    return Inertia::render('MenuPreview', ['categories' => $categories, 'view' => 'preview']);
 });
 
 Route::middleware('auth')->group(function () {

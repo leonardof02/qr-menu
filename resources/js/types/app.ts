@@ -13,6 +13,7 @@ export interface Category {
     id: number,
     name: string,
     icon?: string
+    products?: Product[]
 }
 
 export interface ManageProductsState {
