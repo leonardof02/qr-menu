@@ -31,13 +31,14 @@ export default function ManageProducts({ products, categories, view }: ManagePro
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [mode, setMode] = useState<FormMode>("add");
     const [idProductForEditing, setIdProductForEditing] = useState<number | null>(null);
-    const [productState, setProductState] = useState<ManageProductsState>(initialState);
+    const [productState, setProductState] = useState<ManageProductsState>({
+        ...initialState, category: categories[0].name
+    });
 
     // Functions
     const handleModalClose = () => setModalIsOpen(false);
 
     const openModalForAddingProduct = () => {
-        setProductState(initialState);
         setModalIsOpen(true);
         setMode("add");
     };
@@ -73,11 +74,13 @@ export default function ManageProducts({ products, categories, view }: ManagePro
             price,
             category_id: categories.find((c) => category === c.name)?.id,
         };
+
         router.post("/products", newProduct);
         setModalIsOpen(false);
         setProductState({
             ...productState,
             name: "",
+            category: categories[0].name
         });
     }
 
