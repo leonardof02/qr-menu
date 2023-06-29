@@ -50,6 +50,7 @@ class ProductController extends Controller
         return redirect("/products");
     }
 
+    // Remove some products in a row
     public function bulkDestroy(Request $request)
     {
         $request->validate(["ids" => ["required", "array", "min:1"]]);

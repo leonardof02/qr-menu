@@ -25,7 +25,7 @@ export default function MenuPreview({ categories, view }: MenuPreviewProps) {
                                         {category.icon} {category.name}
                                     </h3>
                                     {category.products?.map((product) => (
-                                        <div className="flex justify-between mx-10 text-lg italic border-b-2 border-dotted border-neutral-300">
+                                        <div className="flex justify-between mx-10 text-xl italic border-b-2 border-dotted border-neutral-300">
                                             <h4 className="box-content translate-y-1 border-4 border-neutral-800">
                                                 {product.name}
                                             </h4>
