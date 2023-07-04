@@ -52,10 +52,10 @@ export default function ManageCategories({ categories, view }: ManageCategoriesP
 
     // Submits
     const handleDeleteCategory = ( id: number ) =>
-        router.delete(`/categories/${id}`);
+        router.delete(`/admin/categories/${id}`);
 
     function handleBulkDelete(ids: number[]) {
-        router.post("/categories/delete", { ids });
+        router.post("/admin/categories/delete", { ids });
     }
 
     // Submit functions
@@ -66,7 +66,7 @@ export default function ManageCategories({ categories, view }: ManageCategoriesP
             name,
         };
 
-        router.post("/categories", newCategory);
+        router.post("/admin/categories", newCategory);
         setModalIsOpen(false);
         setCategoryState(initialState);
     }
@@ -76,7 +76,7 @@ export default function ManageCategories({ categories, view }: ManageCategoriesP
         const newCategory = {
             name,
         };
-        router.put(`/categories/${idCategoryForEditing}`, newCategory);
+        router.put(`/admin/categories/${idCategoryForEditing}`, newCategory);
         setModalIsOpen(false);
     }
 

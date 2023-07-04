@@ -22,7 +22,7 @@ class CategoryController extends Controller
             'name' => ['required', 'max:255']
         ]);
         Category::create($validatedProduct);
-        return redirect("/categories");
+        return redirect()->back();
     }
 
     // Update a category

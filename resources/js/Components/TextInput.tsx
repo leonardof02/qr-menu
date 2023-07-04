@@ -1,30 +1,26 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, InputHTMLAttributes } from 'react';
+import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react";
 
-export default forwardRef(function TextInput(
-    { type = 'text', className = '', isFocused = false, ...props }: InputHTMLAttributes<HTMLInputElement> & { isFocused?: boolean },
-    ref
-) {
-    const localRef = useRef<HTMLInputElement>(null);
+interface TextInputProps {
+    value: string;
+    name: string;
+    label?: string
+    placeholder?: string;
+    type: HTMLInputTypeAttribute;
+    onChange: ( e: ChangeEvent<HTMLInputElement> ) => void
+    required: boolean
+}
 
-    useImperativeHandle(ref, () => ({
-        focus: () => localRef.current?.focus(),
-    }));
+export default function TextInput({ type, required, value, name, placeholder, onChange, label }: TextInputProps) {
 
-    useEffect(() => {
-        if (isFocused) {
-            localRef.current?.focus();
-        }
-    }, []);
+    const [ selected, setSelected ] = useState<boolean>(false);
 
-    return (
-        <input
-            {...props}
-            type={type}
-            className={
-                'border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm ' +
-                className
-            }
-            ref={localRef}
-        />
-    );
-});
+    return <div className="flex flex-col">
+        {label && <label htmlFor={name} className={`absolute px-2 mt-1 bg-white -translate-y-4 translate-x-3 ${ selected ? "text-black" : "text-slate-600"  }`}>{ label }</label> }
+        <input {...{type, value, name, placeholder, onChange, required}} id={name}
+            className="p-4 border-opacity-100 rounded-lg border-1 border-slate-400 focus:outline-none focus:ring-0 focus:border-black"
+            onFocus={ () => setSelected(true) }
+            onBlur={ () => setSelected(false) }
+            >
+        </input>
+    </div>
+}

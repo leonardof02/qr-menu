@@ -27,7 +27,7 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'min:0' ],
         ]);
         Product::create($validatedProduct);
-        return redirect("/products");
+        return redirect()->back();
     }
 
     // Update a product
@@ -39,7 +39,7 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'min:0' ],
         ]);
         Product::query()->find($id)->update($validatedProduct);
-        return redirect("/products");
+        return redirect()->back();
     }
 
     // Remove a product
@@ -47,7 +47,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return redirect("/products");
+        return redirect()->back();
     }
 
     // Remove some products in a row

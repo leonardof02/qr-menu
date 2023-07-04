@@ -7,9 +7,7 @@ import { ManageProductsState } from "@/types/app";
 
 // Components
 import ProductsTable from "@/Components/MyComponents/ProductsTable";
-import DashboardMenu, {
-    MenuOption,
-} from "@/Components/MyComponents/DashboardMenu";
+import DashboardMenu, { MenuOption } from "@/Components/MyComponents/DashboardMenu";
 import Modal from "@/Components/MyComponents/Modal";
 import ProductForm from "@/Components/MyComponents/ProductForm";
 
@@ -61,10 +59,10 @@ export default function ManageProducts({ products, categories, view }: ManagePro
     };
 
     const handleDeleteProduct = (id: number) =>
-        router.delete(`/products/${id}`);
+        router.delete(`/admin/products/${id}`);
 
     function handleBulkDelete(ids: number[]) {
-        router.post("/products/delete", { ids });
+        router.post("/admin/products/delete", { ids });
     }
 
     const handleChangeState = ( e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> ) => {
@@ -81,7 +79,7 @@ export default function ManageProducts({ products, categories, view }: ManagePro
             category_id: categories.find((c) => category === c.name)?.id,
         };
 
-        router.post("/products", newProduct);
+        router.post("/admin/products", newProduct);
         setModalIsOpen(false);
         setProductState({
             ...productState,
@@ -97,7 +95,7 @@ export default function ManageProducts({ products, categories, view }: ManagePro
             price,
             category_id: categories.find((c) => category === c.name)?.id,
         };
-        router.put(`/products/${idProductForEditing}`, newProduct);
+        router.put(`/admin/products/${idProductForEditing}`, newProduct);
         setModalIsOpen(false);
     }
 

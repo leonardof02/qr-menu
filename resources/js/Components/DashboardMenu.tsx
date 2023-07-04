@@ -25,7 +25,7 @@ function DashboardMenu({ option }: DashboardMenuProps) {
         <div className="flex flex-row w-screen p-1 shadow-md md:h-screen md:w-fit md:flex-col bg-slate-950">
             {menuOptions.map((menuOption, index) => (
                 <Link
-                    href={`/${menuOption}`}
+                    href={`/admin/${menuOption}`}
                     key={index}
                     className={`flex items-center justify-center p-3 mx-2 my-1 text-3xl
                             transition-colors rounded-sm hover:bg-white hover:text-black

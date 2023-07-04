@@ -4,11 +4,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Category;
-use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use PhpParser\Node\Stmt\Catch_;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -19,24 +17,41 @@ Route::get('/', function () {
     ]);
 });
 
-// Products router
-Route::get('/products', [ProductController::class, 'index']);
-Route::post('/products', [ProductController::class, 'store']);
-Route::put('/products/{id}', [ProductController::class, 'update']);
-Route::delete('/products/{id}', [ProductController::class, 'destroy']);
-Route::post('/products/delete', [ProductController::class, 'bulkDestroy']);
+// Admin Dashboard routes
+Route::prefix('admin')->middleware(['auth'])->group( function() {
 
-// Categories Router
-Route::get('/categories', [CategoryController::class, 'index']);
-Route::post('/categories', [CategoryController::class, 'store']);
-Route::put('/categories/{id}', [CategoryController::class, 'update']);
-Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
-Route::post('/categories/delete', [CategoryController::class, 'bulkDestroy']);
+    Route::prefix('products')-> group( function() {
 
+        // Products router
+        Route::get('/', [ProductController::class, 'index']);
+        Route::post('/', [ProductController::class, 'store']);
+        Route::put('/{id}', [ProductController::class, 'update']);
+        Route::delete('/{id}', [ProductController::class, 'destroy']);
+        Route::post('/delete', [ProductController::class, 'bulkDestroy']);
+        
+    });
+    
+    Route::prefix('categories')-> group( function() {
+        
+        //  Router
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::put('/{id}', [CategoryController::class, 'update']);
+        Route::delete('/{id}', [CategoryController::class, 'destroy']);
+        Route::post('/delete', [CategoryController::class, 'bulkDestroy']);
+        
+    });
+    
+    Route::get('/preview', function () {
+        $categories = Category::query()->with('products')->get();
+        return Inertia::render('MenuPreview', ['categories' => $categories, 'view' => 'preview']);
+    });
+});    
 
-Route::get('/preview', function () {
-    $categories = Category::query()->with('products')->get();
-    return Inertia::render('MenuPreview', ['categories' => $categories, 'view' => 'preview']);
+// Menu
+Route::get('/menu', function() {
+    $categories = Category::with('products')->get();
+    return Inertia::render('MenuView', ['categories' => $categories]);
 });
 
 Route::middleware('auth')->group(function () {
