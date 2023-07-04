@@ -1,6 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 
 import { Category, FormMode, Product } from "@/types/app";
 import { ManageProductsState } from "@/types/app";
@@ -10,6 +10,7 @@ import ProductsTable from "@/Components/ProductsTable";
 import DashboardMenu, { MenuOption } from "@/Components/DashboardMenu";
 import Modal from "@/Components/Modal";
 import ProductForm from "@/Components/ProductForm";
+import Alert from "@/Components/Alert";
 
 interface ManageProductsProps {
     products: Product[];
@@ -25,6 +26,9 @@ const initialState = {
 
 export default function ManageProducts({ products, categories, view }: ManageProductsProps) {
     
+    // Errors handling
+    const { errors } = usePage().props;
+
     // State
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [mode, setMode] = useState<FormMode>("add");
@@ -111,6 +115,7 @@ export default function ManageProducts({ products, categories, view }: ManagePro
                     <h1 className="m-5 text-3xl font-extrabold text-center">
                         Manejar Productos
                     </h1>
+                    <Alert errors={ errors } />
                     <ProductsTable
                         products={products}
                         onDelete={handleDeleteProduct}

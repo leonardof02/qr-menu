@@ -7,7 +7,8 @@ import { Category, FormMode, ManageCategoryState, NO_EVENT } from "@/types/app";
 import { ChangeEvent, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import CategoryForm from "@/Components/CategoryForm";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
+import Alert from "@/Components/Alert";
 
 interface ManageCategoriesProps {
     categories: Category[];
@@ -19,6 +20,9 @@ const initialState = {
 }
 
 export default function ManageCategories({ categories, view }: ManageCategoriesProps) {
+
+    // Handle errors
+    const { errors } = usePage().props;
 
     const [ modalIsOpen, setModalIsOpen ] = useState<boolean>(false);
     const [ mode, setMode ] = useState<FormMode>("add");
@@ -90,6 +94,7 @@ export default function ManageCategories({ categories, view }: ManageCategoriesP
                     <h1 className="m-5 text-3xl font-extrabold text-center">
                         Manejar Categorias
                     </h1>
+                    <Alert errors={ errors } />
                     <CategoriesTable
                         categories={ categories }
                         onBulkDelete={ handleBulkDelete }

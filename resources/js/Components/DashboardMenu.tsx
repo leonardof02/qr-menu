@@ -5,6 +5,7 @@ import {
     MdCategory,
     MdPreview,
     MdMoreHoriz,
+    MdQrCode
 } from "react-icons/md";
 
 export type MenuOption = "products" | "categories" | "preview" | "";
@@ -43,7 +44,7 @@ function DashboardMenu({ option }: DashboardMenuProps) {
                 className={`flex items-center justify-center p-3 mx-2 my-1 text-3xl text-white
                             transition-colors rounded-sm ms-auto md:mt-auto`}
             >
-                <MdMoreHoriz />
+                <MdQrCode />
             </Link>
         </div>
     );
