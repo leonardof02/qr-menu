@@ -12,7 +12,6 @@ import DashboardMenu, {
 } from "@/Components/MyComponents/DashboardMenu";
 import Modal from "@/Components/MyComponents/Modal";
 import ProductForm from "@/Components/MyComponents/ProductForm";
-import DeleteFloatingButton from "@/Components/MyComponents/DeleteFloatingButton";
 
 interface ManageProductsProps {
     products: Product[];
@@ -26,17 +25,12 @@ const initialState = {
     price: 10,
 };
 
-export default function ManageProducts({
-    products,
-    categories,
-    view,
-}: ManageProductsProps) {
+export default function ManageProducts({ products, categories, view }: ManageProductsProps) {
+    
     // State
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [mode, setMode] = useState<FormMode>("add");
-    const [idProductForEditing, setIdProductForEditing] = useState<
-        number | null
-    >(null);
+    const [idProductForEditing, setIdProductForEditing] = useState<number | null>(null);
     const [productState, setProductState] = useState<ManageProductsState>({
         ...initialState,
         category: categories[0].name,
@@ -50,6 +44,7 @@ export default function ManageProducts({
         setMode("add");
     };
 
+    // 
     const openModalForEditingProduct = (id: number) => {
         const product = products.find((product) => id === product.id);
         if (product) {
@@ -72,9 +67,7 @@ export default function ManageProducts({
         router.post("/products/delete", { ids });
     }
 
-    const handleChangeState = (
-        e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
-    ) => {
+    const handleChangeState = ( e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> ) => {
         setProductState({ ...productState, [e.target.id]: e.target.value });
     };
 
@@ -143,8 +136,8 @@ export default function ManageProducts({
                 </h3>
                 <ProductForm
                     categories={categories}
-                    handleChange={handleChangeState}
                     product={productState}
+                    onChange={handleChangeState}
                     onSubmit={mode === "add" ? addProduct : editProduct}
                 />
             </Modal>

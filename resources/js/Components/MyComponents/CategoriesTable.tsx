@@ -1,36 +1,38 @@
+import { Category, NO_EVENT } from "@/types/app";
 import { ChangeEvent, useState } from "react";
-import { MdEdit, MdDelete } from "react-icons/md";
-
-import { NO_EVENT, Product } from "@/types/app";
+import { MdDelete, MdEdit } from "react-icons/md";
 import DeleteFloatingButton from "./DeleteFloatingButton";
 
-interface ProductsTableProps {
-    products: Product[];
+
+interface CategoriesTableProps {
+    categories: Category[];
     onDelete?: (id: number) => void;
     onEdit?: (id: number) => void;
     onBulkDelete?: (ids: number[]) => void;
 }
 
-export default function ProductsTable({ products, onDelete, onEdit, onBulkDelete }: ProductsTableProps) {
+export default function CategoriesTable({ categories, onDelete, onEdit, onBulkDelete }: CategoriesTableProps) {
+    // TODO: Refactor this with hooks
+    
     // State
-    const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
     // Functions
     const handleSelected = (e: ChangeEvent<HTMLInputElement>) => {
         const id = Number.parseInt(e.target.id);
-        setSelectedProducts(
-            selectedProducts.includes(id)
-                ? selectedProducts.filter(
+        setSelectedCategories(
+            selectedCategories.includes(id)
+                ? selectedCategories.filter(
                       (selectedProducts) => selectedProducts != id
                   )
-                : [...selectedProducts, id]
+                : [...selectedCategories, id]
         );
     };
 
     const onAllSelected = (e: ChangeEvent<HTMLInputElement>) => {
-        setSelectedProducts(
-            selectedProducts.length != products.length
-                ? products.map((product) => product.id)
+        setSelectedCategories(
+            selectedCategories.length != categories.length
+                ? categories.map(( category ) => category.id)
                 : []
         );
     };
@@ -47,22 +49,20 @@ export default function ProductsTable({ products, onDelete, onEdit, onBulkDelete
                                 className="p-2 rounded-full checked:bg-slate-800"
                                 onChange={onAllSelected}
                                 checked={
-                                    selectedProducts.length == products.length
+                                    selectedCategories.length == categories.length
                                 }
                             />
                         </th>
                         <th className="p-3">Nombre</th>
-                        <th className="p-3">Categoria</th>
-                        <th className="p-3">Precio ($)</th>
                         <th className="p-3">Opciones</th>
                     </tr>
                 </thead>
                 <tbody className="">
-                    {products.map((product) => (
+                    {categories.map(category => (
                         <tr
-                            key={product.id}
+                            key={category.id}
                             className={
-                                selectedProducts.includes(product.id)
+                                selectedCategories.includes(category.id)
                                     ? "divide-slate-300 bg-slate-200"
                                     : "divide-slate-300"
                             }
@@ -71,26 +71,20 @@ export default function ProductsTable({ products, onDelete, onEdit, onBulkDelete
                                 <input
                                     type="checkbox"
                                     className="p-2 rounded-full checked:bg-slate-800"
-                                    id={product.id.toString()}
-                                    checked={selectedProducts.includes(
-                                        product.id
+                                    id={category.id.toString()}
+                                    checked={selectedCategories.includes(
+                                        category.id
                                     )}
                                     onChange={handleSelected}
                                 />
                             </td>
-                            <td className="px-5 py-2 border">{product.name}</td>
-                            <td className="px-5 py-2 border">
-                                {product.category.name}
-                            </td>
-                            <td className="px-5 py-2 border">
-                                ${product.price}
-                            </td>
+                            <td className="px-5 py-2 border">{ category.icon } {category.name}</td>
                             <td className="px-5 py-2 border">
                                 <div className="flex items-center gap-2 text-2xl justify-evenly">
                                     <button
                                         onClick={
                                             onEdit
-                                                ? () => onEdit(product.id)
+                                                ? () => onEdit(category.id)
                                                 : NO_EVENT
                                         }
                                         className="p-2 transition-all rounded-md hover:shadow-lg hover:cursor-pointer hover:-translate-y-1"
@@ -100,7 +94,7 @@ export default function ProductsTable({ products, onDelete, onEdit, onBulkDelete
                                     <button
                                         onClick={
                                             onDelete
-                                                ? () => onDelete(product.id)
+                                                ? () => onDelete(category.id)
                                                 : NO_EVENT
                                         }
                                         className="p-2 text-white transition-all rounded-md bg-slate-900 hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
@@ -114,12 +108,12 @@ export default function ProductsTable({ products, onDelete, onEdit, onBulkDelete
                 </tbody>
             </table>
             <DeleteFloatingButton
-                isOpen={selectedProducts.length === 0 ? false : true}
+                isOpen={selectedCategories.length === 0 ? false : true}
                 onClick={
-                    selectedProducts.length !== 0 && onBulkDelete
+                    selectedCategories.length !== 0 && onBulkDelete
                         ? () => {
-                              onBulkDelete(selectedProducts);
-                              setSelectedProducts([]);
+                              onBulkDelete(selectedCategories);
+                              setSelectedCategories([]);
                           }
                         : NO_EVENT
                 }

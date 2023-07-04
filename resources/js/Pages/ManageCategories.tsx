@@ -1,23 +1,116 @@
+import Modal from "@/Components/MyComponents/Modal";
+import CategoriesTable from "@/Components/MyComponents/CategoriesTable";
 import DashboardMenu, {
     MenuOption,
 } from "@/Components/MyComponents/DashboardMenu";
-import { Category } from "@/types/app";
+import { Category, FormMode, ManageCategoryState, NO_EVENT } from "@/types/app";
+import { ChangeEvent, useState } from "react";
+import { MdAdd } from "react-icons/md";
+import CategoryForm from "@/Components/MyComponents/CategoryForm";
+import { router } from "@inertiajs/react";
 
-export default function ManageCategories({
-    categories,
-    view,
-}: {
+interface ManageCategoriesProps {
     categories: Category[];
     view: MenuOption;
-}) {
+}
+
+const initialState = {
+    name: "",
+}
+
+export default function ManageCategories({ categories, view }: ManageCategoriesProps) {
+
+    const [ modalIsOpen, setModalIsOpen ] = useState<boolean>(false);
+    const [ mode, setMode ] = useState<FormMode>("add");
+    const [ idCategoryForEditing, setIdCategoryForEditing ] = useState<number | null>(null);
+    const [ categoryState, setCategoryState ] = useState<ManageCategoryState>(initialState);
+
+    // Functions
+    const handleModalClose = () => setModalIsOpen(false);
+    
+    const openModalForAddingCategory = () => {
+        setModalIsOpen(true);
+        setMode("add");
+    };
+
+    
+    const openModalForEditingProduct = (id: number) => {
+        const category = categories.find( category => id === category.id);
+        if ( category ) {
+            const { name } = category;
+            setCategoryState({
+                name
+            });
+            setModalIsOpen(true);
+            setMode("edit");
+        }
+        setIdCategoryForEditing(id);
+    };
+
+    const handleChangeState = ( e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement> ) => {
+        setCategoryState({ ...categoryState, [e.target.id]: e.target.value });
+    };
+
+    // Submits
+    const handleDeleteCategory = ( id: number ) =>
+        router.delete(`/categories/${id}`);
+
+    function handleBulkDelete(ids: number[]) {
+        router.post("/categories/delete", { ids });
+    }
+
+    // Submit functions
+    function addCategory() {
+        setMode("add");
+        const { name } = categoryState;
+        const newCategory = {
+            name,
+        };
+
+        router.post("/categories", newCategory);
+        setModalIsOpen(false);
+        setCategoryState(initialState);
+    }
+
+    function handleEditCategory() {
+        const { name } = categoryState;
+        const newCategory = {
+            name,
+        };
+        router.put(`/categories/${idCategoryForEditing}`, newCategory);
+        setModalIsOpen(false);
+    }
+
     return (
         <>
             <div
                 className={`flex flex-col-reverse h-screen align-top md:w-full md:flex-row justify-normal`}
             >
                 <DashboardMenu option={view} />
-                <div className="flex-1">{categories.toString()}</div>
+                <div className="flex-1 h-screen overflow-scroll">
+                    <h1 className="m-5 text-3xl font-extrabold text-center">
+                        Manejar Categorias
+                    </h1>
+                    <CategoriesTable
+                        categories={ categories }
+                        onBulkDelete={ handleBulkDelete }
+                        onDelete={ handleDeleteCategory }
+                        onEdit={ handleEditCategory }
+                        />
+                    <div className="flex items-center justify-center w-full text-lg">
+                        <button className="flex items-center justify-center p-3 mb-16 text-white transition-all bg-black rounded-md hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1">
+                            <MdAdd />
+                            Agregar Categoria
+                        </button>
+                    </div>
+                </div>
             </div>
+            <Modal isOpen={modalIsOpen}>
+                <h3 className="text-xl font-extrabold">
+                    {mode === "add" ? "Agregar producto" : "Editar Producto"}
+                </h3>
+                <CategoryForm category={ categoryState } onChange={ handleChangeState }/>
+            </Modal>
         </>
     );
 }

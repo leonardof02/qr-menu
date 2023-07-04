@@ -7,23 +7,23 @@ import DropDown from "./DropDown";
 import PriceInput from "./PriceInput";
 import { ChangeEvent } from "react";
 
-interface AddProductFormProps {
+interface ProductFormProps {
     product: ManageProductsState;
     categories: Category[];
     onSubmit?: () => void;
-    handleChange?: (
+    onChange?: (
         e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
     ) => void;
 }
 
-export default function ProductForm({product, onSubmit, categories, handleChange }: AddProductFormProps) {
+export default function ProductForm({product, onSubmit, categories, onChange }: ProductFormProps) {
     return (
         <>
             <TextInput
                 type="text"
                 value={product.name}
                 name="name"
-                onChange={handleChange ? handleChange : NO_EVENT}
+                onChange={onChange ? onChange : NO_EVENT}
                 placeholder="Nombre"
                 label="Nombre"
                 required
@@ -33,14 +33,14 @@ export default function ProductForm({product, onSubmit, categories, handleChange
                 value={product.category}
                 label="Categoria"
                 options={categories}
-                onChange={handleChange ? handleChange : NO_EVENT}
+                onChange={onChange ? onChange : NO_EVENT}
             />
             <PriceInput
                 name="price"
                 label="Precio"
                 value={product.price}
                 placeholder="Precio"
-                onChange={handleChange ? handleChange : NO_EVENT}
+                onChange={onChange ? onChange : NO_EVENT}
             />
             <button
                 className="flex items-center justify-center w-20 p-3 text-xl text-white transition-all bg-black rounded-md ms-auto hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Category;
@@ -7,17 +8,6 @@ use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -28,16 +18,20 @@ Route::get('/', function () {
     ]);
 });
 
+// Products router
 Route::get('/products', [ProductController::class, 'index']);
 Route::post('/products', [ProductController::class, 'store']);
 Route::put('/products/{id}', [ProductController::class, 'update']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 Route::post('/products/delete', [ProductController::class, 'bulkDestroy']);
 
-Route::get('/categories', function () {
-    $categories = Category::all();
-    return Inertia::render('ManageCategories', ['categories' => $categories, 'view' => 'categories']);
-});
+// Categories Router
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::post('/categories', [ProductController::class, 'store']);
+Route::put('/categories/{id}', [ProductController::class, 'update']);
+Route::delete('/categories/{id}', [ProductController::class, 'destroy']);
+Route::post('/categories/delete', [ProductController::class, 'bulkDestroy']);
+
 
 Route::get('/preview', function () {
     $categories = Category::query()->with('products')->get();

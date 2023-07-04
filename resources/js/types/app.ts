@@ -22,6 +22,10 @@ export interface ManageProductsState {
     price: number;
 }
 
+export interface ManageCategoryState {
+    name: string,
+    icon?: string
+}
+
 // Types
 export type FormMode = "add" | "edit";
-
