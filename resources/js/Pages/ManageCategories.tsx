@@ -32,9 +32,8 @@ export default function ManageCategories({ categories, view }: ManageCategoriesP
         setModalIsOpen(true);
         setMode("add");
     };
-
     
-    const openModalForEditingProduct = (id: number) => {
+    const openModalForEditingCategory = (id: number) => {
         const category = categories.find( category => id === category.id);
         if ( category ) {
             const { name } = category;
@@ -95,21 +94,25 @@ export default function ManageCategories({ categories, view }: ManageCategoriesP
                         categories={ categories }
                         onBulkDelete={ handleBulkDelete }
                         onDelete={ handleDeleteCategory }
-                        onEdit={ handleEditCategory }
+                        onEdit={ openModalForEditingCategory }
                         />
                     <div className="flex items-center justify-center w-full text-lg">
-                        <button className="flex items-center justify-center p-3 mb-16 text-white transition-all bg-black rounded-md hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1">
+                        <button className="flex items-center justify-center p-3 mb-16 text-white transition-all bg-black rounded-md hover:shadow-lg hover:bg-slate-700 hover:cursor-pointer hover:-translate-y-1"
+                                onClick={ openModalForAddingCategory }>
                             <MdAdd />
                             Agregar Categoria
                         </button>
                     </div>
                 </div>
             </div>
-            <Modal isOpen={modalIsOpen}>
+            <Modal isOpen={modalIsOpen} onClose={ handleModalClose }>
                 <h3 className="text-xl font-extrabold">
                     {mode === "add" ? "Agregar producto" : "Editar Producto"}
                 </h3>
-                <CategoryForm category={ categoryState } onChange={ handleChangeState }/>
+                <CategoryForm category={ categoryState }
+                            onChange={ handleChangeState }
+                            onSubmit={mode === "add" ? addCategory : handleEditCategory}
+                />
             </Modal>
         </>
     );

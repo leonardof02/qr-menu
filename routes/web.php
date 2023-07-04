@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use PhpParser\Node\Stmt\Catch_;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -27,10 +28,10 @@ Route::post('/products/delete', [ProductController::class, 'bulkDestroy']);
 
 // Categories Router
 Route::get('/categories', [CategoryController::class, 'index']);
-Route::post('/categories', [ProductController::class, 'store']);
-Route::put('/categories/{id}', [ProductController::class, 'update']);
-Route::delete('/categories/{id}', [ProductController::class, 'destroy']);
-Route::post('/categories/delete', [ProductController::class, 'bulkDestroy']);
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::put('/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+Route::post('/categories/delete', [CategoryController::class, 'bulkDestroy']);
 
 
 Route::get('/preview', function () {

@@ -19,7 +19,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validatedProduct = $request->validate([
-            'name' => ['required', 'max:255', 'alpha_num']
+            'name' => ['required', 'max:255']
         ]);
         Category::create($validatedProduct);
         return redirect("/categories");
@@ -29,10 +29,10 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $validatedProduct = $request->validate([
-            'name' => ['required', 'max:255', 'alpha_num'],
+            'name' => ['required', 'max:255'],
         ]);
         Category::query()->find($id)->update($validatedProduct);
-        return redirect("/products");
+        return redirect()->back()->with('success', 'Recurso editado correctamente');
     }
 
     /**
