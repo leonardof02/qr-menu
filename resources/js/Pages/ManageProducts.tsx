@@ -6,10 +6,10 @@ import { Category, FormMode, Product } from "@/types/app";
 import { ManageProductsState } from "@/types/app";
 
 // Components
-import ProductsTable from "@/Components/MyComponents/ProductsTable";
-import DashboardMenu, { MenuOption } from "@/Components/MyComponents/DashboardMenu";
-import Modal from "@/Components/MyComponents/Modal";
-import ProductForm from "@/Components/MyComponents/ProductForm";
+import ProductsTable from "@/Components/ProductsTable";
+import DashboardMenu, { MenuOption } from "@/Components/DashboardMenu";
+import Modal from "@/Components/Modal";
+import ProductForm from "@/Components/ProductForm";
 
 interface ManageProductsProps {
     products: Product[];

@@ -1,6 +1,6 @@
 import DashboardMenu, {
     MenuOption,
-} from "@/Components/MyComponents/DashboardMenu";
+} from "@/Components/DashboardMenu";
 import { Category } from "@/types/app";
 import { MdReceipt, MdRestaurantMenu, MdWater } from "react-icons/md";
 

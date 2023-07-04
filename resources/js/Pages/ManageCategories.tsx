@@ -1,12 +1,12 @@
-import Modal from "@/Components/MyComponents/Modal";
-import CategoriesTable from "@/Components/MyComponents/CategoriesTable";
+import Modal from "@/Components/Modal";
+import CategoriesTable from "@/Components/CategoriesTable";
 import DashboardMenu, {
     MenuOption,
-} from "@/Components/MyComponents/DashboardMenu";
+} from "@/Components/DashboardMenu";
 import { Category, FormMode, ManageCategoryState, NO_EVENT } from "@/types/app";
 import { ChangeEvent, useState } from "react";
 import { MdAdd } from "react-icons/md";
-import CategoryForm from "@/Components/MyComponents/CategoryForm";
+import CategoryForm from "@/Components/CategoryForm";
 import { router } from "@inertiajs/react";
 
 interface ManageCategoriesProps {
