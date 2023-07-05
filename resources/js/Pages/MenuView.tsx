@@ -19,12 +19,12 @@ export const MenuView = ({ categories }: MenuViewProps) => {
             {categories.map( category => {
                 if (category.products?.length !== 0) {
                     return (
-                        <div>
+                        <div key={category.id}>
                             <h3 className="w-full py-2 mt-10 text-4xl font-bold border-b border-neutral-500">
                                 {category.icon} {category.name}
                             </h3>
                             {category.products?.map((product) => (
-                                <div className="flex justify-between mx-10 text-xl italic border-b-2 border-dotted border-neutral-300">
+                                <div key={ product.id } className="flex justify-between mx-10 text-xl italic border-b-2 border-dotted border-neutral-300">
                                     <h4 className="box-content translate-y-1 border-4 border-neutral-900">
                                         {product.name}
                                     </h4>

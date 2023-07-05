@@ -3,7 +3,7 @@ import CategoriesTable from "@/Components/CategoriesTable";
 import DashboardMenu, {
     MenuOption,
 } from "@/Components/DashboardMenu";
-import { Category, FormMode, ManageCategoryState, NO_EVENT } from "@/types/app";
+import { Category, FormMode, ManageCategoryState } from "@/types/app";
 import { ChangeEvent, useState } from "react";
 import { MdAdd } from "react-icons/md";
 import CategoryForm from "@/Components/CategoryForm";
