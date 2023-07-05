@@ -4,7 +4,7 @@ import createServer from '@inertiajs/react/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import route from '../../vendor/tightenco/ziggy/dist/index.m';
 
-const appName = 'Laravel';
+const appName = 'QR Menu';
 
 createServer((page) =>
     createInertiaApp({
