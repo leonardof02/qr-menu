@@ -1,4 +1,5 @@
 import TextInput from "@/Components/TextInput";
+import { router } from "@inertiajs/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface AdminAuthState {
@@ -21,6 +22,9 @@ export const AdminAuth = () => {
 
     function handleSubmit(e: FormEvent ) {
         e.preventDefault();
+        router.post("/admin/auth", {
+            ...adminAuthState
+        })
     }
 
     return <div className="flex items-center justify-center min-h-screen">
