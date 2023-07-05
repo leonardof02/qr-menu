@@ -46,7 +46,6 @@ class LoginRegisterController extends Controller
             "password" => 'required'
         ]);
 
-
         $username = $request->username;
         $password = $request->password;
 

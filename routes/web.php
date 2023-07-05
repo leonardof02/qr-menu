@@ -14,7 +14,7 @@ Route::get('/', function () {
 // Admin Dashboard routes
 Route::prefix('admin')->group(function () {
 
-    Route::prefix('products')->group(function () {
+    Route::prefix('products')->middleware('auth:admin')->group(function () {
 
         // Products router
         Route::get('/', [ProductController::class, 'index']);
@@ -23,9 +23,9 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [ProductController::class, 'destroy']);
         Route::post('/delete', [ProductController::class, 'bulkDestroy']);
 
-    })->middleware('auth');;
+    });
 
-    Route::prefix('categories')->group(function () {
+    Route::prefix('categories')->middleware('auth:admin')->group(function () {
 
         //  Router
         Route::get('/', [CategoryController::class, 'index']);
@@ -34,19 +34,19 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [CategoryController::class, 'destroy']);
         Route::post('/delete', [CategoryController::class, 'bulkDestroy']);
 
-    })->middleware('auth');
+    });
 
     // Show menu preview
-    Route::get('/preview', function () {
+    Route::middleware('auth:admin')->get('/preview', function () {
         $categories = Category::query()->with('products')->get();
         return Inertia::render('MenuPreview', ['categories' => $categories, 'view' => 'preview']);
-    })->middleware('auth');;
+    });
 
     // Auth
     Route::get('/auth', [LoginRegisterController::class, 'login']);
     Route::get('/register', [LoginRegisterController::class, 'register']);
     Route::post('/register', [LoginRegisterController::class, 'store']);
-    Route::post('/auth', [LoginRegisterController::class, 'authenticate']);
+    Route::post('/auth', [LoginRegisterController::class, 'authenticate'])->name("login");
 });
 
 // Menu
