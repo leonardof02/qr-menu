@@ -1,12 +1,15 @@
-import { Category } from "@/types/app";
+import { Head } from "@inertiajs/react";
 import { MdReceipt, MdRestaurantMenu } from "react-icons/md";
+
+import { Category } from "@/types/app";
 
 interface MenuViewProps {
     categories: Category[]
 }
 
 export const MenuView = ({ categories }: MenuViewProps) => {
-    return (
+    return <>
+        <Head title="Menu"/>
         <div
             className="flex-1 min-h-screen p-8 overflow-scroll md:p-14 text-neutral-300 bg-neutral-900"
             style={{ fontFamily: "ShadowsIntoLight" }}
@@ -38,7 +41,7 @@ export const MenuView = ({ categories }: MenuViewProps) => {
                 }
             })}
         </div>
-    );
-};
+    </>
+}
 
-export default MenuView;
+export default MenuView

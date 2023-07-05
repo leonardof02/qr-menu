@@ -4,7 +4,7 @@ import { QRCodeSVG } from "qrcode.react";
 export default function Welcome() {
     return (
         <>
-            <Head title="QR Menu" />
+            <Head title="Bienvenido" />
             <div className="min-h-screen bg-neutral-200 text-neutral-900">
                 <div className="flex flex-col items-center justify-center p-5 text-center">
                     <h1 className="text-4xl font-extrabold">Bienvenido al QR Menu</h1>

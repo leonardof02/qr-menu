@@ -29,16 +29,18 @@ export const Register = () => {
         })
     }
 
-    return <div className="flex flex-col items-center justify-center min-h-screen">
-        <Alert errors={ errors } />
-        <form className="flex flex-col w-4/5 gap-4 p-10 shadow-xl md:w-96" onSubmit={ handleSubmit }>
-            <h1 className="text-4xl font-extrabold">Registrar Admin</h1>
-            <TextInput name="username" value={ adminRegisterState.username } onChange={ handleChange }
-                        required type="text" label="Username"/>
-            <TextInput name="password" value={ adminRegisterState.password } onChange={ handleChange }
-                        required type="password" label="Contraseña"/>
-            <input className="p-3 text-xl font-bold rounded-md cursor-pointer bg-neutral-900 text-neutral-100 hover:bg-neutral-700" type="submit" value="Register Admin"/>
-        </form>
-    </div>;
+    return <>
+        <div className="flex flex-col items-center justify-center min-h-screen">
+            <Alert errors={ errors } />
+            <form className="flex flex-col w-4/5 gap-4 p-10 shadow-xl md:w-96" onSubmit={ handleSubmit }>
+                <h1 className="text-4xl font-extrabold">Registrar Admin</h1>
+                <TextInput name="username" value={ adminRegisterState.username } onChange={ handleChange }
+                            required type="text" label="Username"/>
+                <TextInput name="password" value={ adminRegisterState.password } onChange={ handleChange }
+                            required type="password" label="Contraseña"/>
+                <input className="p-3 text-xl font-bold rounded-md cursor-pointer bg-neutral-900 text-neutral-100 hover:bg-neutral-700" type="submit" value="Register Admin"/>
+            </form>
+        </div>
+    </>
 };
 export default Register;

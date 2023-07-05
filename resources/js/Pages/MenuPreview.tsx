@@ -1,8 +1,9 @@
-import DashboardMenu, {
-    MenuOption,
-} from "@/Components/DashboardMenu";
+import { Head } from "@inertiajs/react";
+import { MdReceipt, MdRestaurantMenu } from "react-icons/md";
+
 import { Category } from "@/types/app";
-import { MdReceipt, MdRestaurantMenu, MdWater } from "react-icons/md";
+
+import DashboardMenu, { MenuOption } from "@/Components/DashboardMenu";
 
 interface MenuPreviewProps {
     categories: Category[];
@@ -12,6 +13,7 @@ interface MenuPreviewProps {
 export default function MenuPreview({ categories, view }: MenuPreviewProps) {
     return (
         <>
+            <Head title="Menu (Vista previa)"/>
             <div className="flex flex-col-reverse h-screen align-top md:w-full md:flex-row justify-normal bg-neutral-800">
                 <DashboardMenu option={view} />
                 <div

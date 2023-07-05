@@ -1,14 +1,14 @@
-import Modal from "@/Components/Modal";
-import CategoriesTable from "@/Components/CategoriesTable";
-import DashboardMenu, {
-    MenuOption,
-} from "@/Components/DashboardMenu";
-import { Category, FormMode, ManageCategoryState } from "@/types/app";
 import { ChangeEvent, useState } from "react";
 import { MdAdd } from "react-icons/md";
-import CategoryForm from "@/Components/CategoryForm";
-import { router, usePage } from "@inertiajs/react";
+
+// My components
 import Alert from "@/Components/Alert";
+import Modal from "@/Components/Modal";
+import CategoriesTable from "@/Components/CategoriesTable";
+import DashboardMenu, { MenuOption, } from "@/Components/DashboardMenu";
+import { Category, FormMode, ManageCategoryState } from "@/types/app";
+import CategoryForm from "@/Components/CategoryForm";
+import { Head, router, usePage } from "@inertiajs/react";
 
 interface ManageCategoriesProps {
     categories: Category[];
@@ -86,6 +86,7 @@ export default function ManageCategories({ categories, view }: ManageCategoriesP
 
     return (
         <>
+            <Head title="Manejar Categorias"/>
             <div
                 className={`flex flex-col-reverse h-screen align-top md:w-full md:flex-row justify-normal`}
             >

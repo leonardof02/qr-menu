@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { MdAdd } from "react-icons/md";
-import { router, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 
 import { Category, FormMode, Product } from "@/types/app";
 import { ManageProductsState } from "@/types/app";
@@ -106,6 +106,7 @@ export default function ManageProducts({ products, categories, view }: ManagePro
     // Render
     return (
         <>
+            <Head title="Manejar Productos"/>
             <div
                 className={`flex flex-col-reverse h-screen align-top md:w-full md:flex-row justify-normal
                 ${modalIsOpen && "pointer-events-none"}`}
