@@ -112,7 +112,7 @@ export default function ManageCategories({ categories, view }: ManageCategoriesP
             </div>
             <Modal isOpen={modalIsOpen} onClose={ handleModalClose }>
                 <h3 className="text-xl font-extrabold">
-                    {mode === "add" ? "Agregar producto" : "Editar Producto"}
+                    {mode === "add" ? "Agregar Categoría" : "Editar Categoría"}
                 </h3>
                 <CategoryForm category={ categoryState }
                             onChange={ handleChangeState }

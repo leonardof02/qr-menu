@@ -1,7 +1,8 @@
-import TextInput from "@/Components/TextInput";
-import { router } from "@inertiajs/react";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { router, usePage } from "@inertiajs/react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
+import TextInput from "@/Components/TextInput";
+import Alert from "@/Components/Alert";
 interface AdminRegisterState {
     username: string,
     password: string
@@ -14,6 +15,7 @@ const initialState = {
 
 export const Register = () => {
     
+    const { errors } = usePage().props;
     const [ adminRegisterState, setAdminRegisterState ] = useState<AdminRegisterState>( initialState );
     
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -27,7 +29,8 @@ export const Register = () => {
         })
     }
 
-    return <div className="flex items-center justify-center min-h-screen">
+    return <div className="flex flex-col items-center justify-center min-h-screen">
+        <Alert errors={ errors } />
         <form className="flex flex-col w-4/5 gap-4 p-10 shadow-xl md:w-96" onSubmit={ handleSubmit }>
             <h1 className="text-4xl font-extrabold">Registrar Admin</h1>
             <TextInput name="username" value={ adminRegisterState.username } onChange={ handleChange }

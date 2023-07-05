@@ -54,6 +54,8 @@ class LoginRegisterController extends Controller
             return redirect("/admin/products");
         }
 
-        return redirect()->back();
+        return redirect()->back()->withErrors([
+            "auth" => "Error de autenticacion, credenciales invalidas"
+        ]);
     }
 }

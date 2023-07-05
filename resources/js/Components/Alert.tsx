@@ -16,7 +16,7 @@ export const Alert = ({ errors }: AlertProps) => {
             setRender(false);
             if(element.current)
                 (element.current as HTMLElement).classList.remove("opacity-0");
-        }, 5000 )
+        }, 10_000 )
     }, [ errors ] )
 
     const errorMsgs: string[] = Object.keys(errors).map((key) => errors[key])
